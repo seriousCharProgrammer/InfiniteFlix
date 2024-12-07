@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import SeriesCard from './SeriesCard';
+import SeriesCard from '../components/SeriesCard';
 
 const SeriesPage = () => {
   const [series, setSeries] = useState([]);

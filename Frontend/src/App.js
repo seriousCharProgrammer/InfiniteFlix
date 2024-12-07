@@ -9,7 +9,7 @@ import Header from './components/Header';
 import Home from './components/Home';
 import CustomToastContainer from './components/CustomToastContainer';
 import Detail from './components/Detail';
-import SeriesPage from './components/SeriesPage';
+import SeriesPage from './Pages/SeriesPage';
 import { useSelector } from 'react-redux';
 import SearchResultsPage from './Pages/SearchPage';
 import MoviesPage from './Pages/MoviePage';

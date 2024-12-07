@@ -2,7 +2,7 @@ const express = require('express');
 const hpp = require('hpp');
 const cors = require('cors');
 const helmet = require('helmet');
-const movieRouter = require('./Routes/movieRoutes');
+
 const morgan = require('morgan');
 const errorHandler = require('./Middlewares/error');
 const connectdb = require('./DB/DB');
@@ -37,7 +37,7 @@ app.use(xss());
 app.use(hpp());
 app.use(helmet());
 app.use(morgan('dev'));
-app.use('/api/movie', movieRouter);
+
 app.use('/api/auth', authRouter);
 app.use(errorHandler);
 const server = app.listen(PORT, () => {
