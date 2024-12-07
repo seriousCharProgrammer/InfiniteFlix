@@ -1,0 +1,63 @@
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
+}
+@font-face {
+  font-family: Avenir-Roman, sans-serif;
+  src: url(./fonts/AvenirLTStd-Roman.otf) format('otf');
+}
+body {
+  background-color: #040714;
+  color: #f9f9f9;
+  font-family: Avenir-Roman, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: #f9f9f9;
+  text-decoration: none;
+}
+
+@media only screen and (min-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+}
+
+@media only screen and (min-width: 480px) and (max-width: 768px) {
+  body {
+    font-size: 15px;
+  }
+}
+
+@media only screen and (max-width: 479px) {
+  body {
+    font-size: 14px;
+  }
+}
+
+.loadingSpinnerContainer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 5000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loadingSpinner {
+  width: 64px;
+  height: 64px;
+  border: 8px solid;
+  border-color: #000 transparent #555 transparent;
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite;
+}
