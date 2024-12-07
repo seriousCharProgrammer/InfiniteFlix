@@ -60,3 +60,14 @@ cd InfiniteFlix
 ### Set Up Environment Variables Frontend
 
 - REACT_APP_API_KEY=your_TMDB_API_KEY
+
+#### Acknowledgements 🙌
+
+    React
+    Express.js
+    MongoDB
+    Movie data from TMDb API
+
+Contact 📧
+
+Developed by seriousCharProgrammer
