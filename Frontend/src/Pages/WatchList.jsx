@@ -158,16 +158,7 @@ const Watchlist = () => {
 
 export default Watchlist;
 // Styled Components with Enhanced Styling
-/*
-const WatchlistContainer = styled.div`
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #090b13;
-  min-height: 100vh;
-  color: #f9f9f9;
-`;
-*/
+
 const WatchlistContainer = styled.div`
   max-width: 1400px;
   margin: 0 auto;

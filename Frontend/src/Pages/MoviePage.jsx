@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import MovieCard from '../components/MovieCard';
-
+import Spinner from '../components/Spinner';
 const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
@@ -80,7 +80,7 @@ const MoviesPage = () => {
           />
         ))}
       </MoviesGrid>
-      {loading && <Loading>Loading...</Loading>}
+      {loading && <Spinner />}
       {!hasMore && <EndMessage>No more movies to show!</EndMessage>}
     </PageContainer>
   );

@@ -7,6 +7,7 @@ import Spinner from '../components/Spinner';
 import styled from 'styled-components';
 import MovieCard from '../components/MovieCard'; // Assuming you have a MovieCard component
 import SeriesCard from '../components/SeriesCard';
+
 export default function SearchResultsPage() {
   const dispatch = useDispatch();
   const location = useLocation();

@@ -1,0 +1,15 @@
+{
+  "name": "infiniteflix",
+  "version": "1.0.0",
+  "description": "InfiniteFlix is a full-stack web application for discovering, browsing, and managing movies. Built with **React**, **Express.js**, and **MongoDB**, this platform provides a seamless user experience for movie enthusiasts.",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"cd ./Frontend && npm start\" \"cd ./Backend && npm start\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
