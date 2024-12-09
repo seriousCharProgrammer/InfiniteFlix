@@ -4,7 +4,7 @@
   "description": "InfiniteFlix is a full-stack web application for discovering, browsing, and managing movies. Built with **React**, **Express.js**, and **MongoDB**, this platform provides a seamless user experience for movie enthusiasts.",
   "scripts": {
     "build": "npm install --prefix Backend && npm install --prefix Frontend && npm run build --prefix Frontend",
-    "start": "nodemon  Backend/server.cjs"
+    "start": "node  Backend/server.cjs"
   },
   "keywords": [],
   "author": "",
