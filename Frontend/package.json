@@ -1,8 +1,9 @@
 {
-  "name": "disney_clone",
+  "name": "infinity_flix_project",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fvilers/disable-react-devtools": "^1.3.0",
     "@reduxjs/toolkit": "^2.4.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",

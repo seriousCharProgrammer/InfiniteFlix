@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API_URL = 'https://api.themoviedb.org/3/';
-const API_KEY = '5f4161158073968a49852676a3e682b4'; // Replace with your actual TMDB API key
+const API_KEY = process.env.REACT_APP_API_KEY; // Replace with your actual TMDB API key
 
 // Fetch popular movies
 const getPopularMovies = async () => {
