@@ -24,7 +24,7 @@ const limiter = rateLimit({
 });
 
 const corsOptions = {
-  origin: 'http://localhost:3000', // replace with your frontend URL
+  origin: ['https://infiniteflix.onrender.com'], // replace with your frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true, // Allow cookies to be sent and received
