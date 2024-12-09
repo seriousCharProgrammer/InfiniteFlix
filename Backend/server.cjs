@@ -85,16 +85,15 @@ app.use(morgan('dev'));
 
 app.use('/api/auth', authRouter);
 const frontendPath = path.resolve(__dirname, '..', 'Frontend', 'build');
-/*
-app.use(express.static(frontendPath));
 
+app.use(express.static(frontendPath));
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
-*/
+
 app.use(errorHandler);
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT || 3120, () => {
   console.log(`Server started listening at port ${PORT}`);
 });
 
