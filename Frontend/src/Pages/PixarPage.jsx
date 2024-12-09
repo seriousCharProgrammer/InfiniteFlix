@@ -15,7 +15,7 @@ const PixarPage = () => {
   // Memoized fetch function to prevent unnecessary re-renders
   const fetchMovies = useCallback(async () => {
     if (loading || !hasMore) return;
-    //`https://api.themoviedb.org/3/discover/movie?api_key=5f4161158073968a49852676a3e682b4&page=${page}`;
+
     setLoading(true);
     try {
       const API_URL = `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_API_KEY}&with_companies=3&page=${page}`;

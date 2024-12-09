@@ -16,7 +16,6 @@ const StarWarsPage = () => {
   const fetchMovies = useCallback(async () => {
     if (loading || !hasMore) return;
     setLoading(true);
-    // https://api.themoviedb.org/3/discover/movie?api_key=5f4161158073968a49852676a3e682b4&with_companies=1&with_keywords=158983&sort_by=popularity.desc&page=${page}
 
     try {
       const API_URL = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.REACT_APP_API_KEY}&query=Star Wars&language=en-US`;
