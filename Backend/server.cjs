@@ -14,7 +14,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const { rateLimit } = require('express-rate-limit');
 
 const app = express();
-dotenv.config({ path: './config/config.env' });
+dotenv.config({ path: '././.env' });
 const PORT = process.env.PORT;
 app.use(express.json());
 connectdb();
@@ -85,10 +85,14 @@ app.use(morgan('dev'));
 
 app.use('/api/auth', authRouter);
 const frontendPath = path.resolve(__dirname, '..', 'Frontend', 'build');
+/*
 app.use(express.static(frontendPath));
+
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
+*/
 app.use(errorHandler);
 const server = app.listen(PORT, () => {
   console.log(`Server started listening at port ${PORT}`);
