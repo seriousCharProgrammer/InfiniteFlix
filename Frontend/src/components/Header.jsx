@@ -100,7 +100,7 @@ export default function Header() {
     e.preventDefault();
 
     const userData = {
-      email,
+      email: email.toLowerCase(),
       password,
     };
 
