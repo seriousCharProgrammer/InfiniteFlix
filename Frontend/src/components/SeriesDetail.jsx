@@ -222,7 +222,10 @@ export default function SeriesDetail() {
   return (
     <Container>
       {loading ? (
-        <LoadingSpinner>Loading...</LoadingSpinner>
+        <LoadingSpinner>
+          <div className='spinner'></div>
+          <p>Loading movie details...</p>
+        </LoadingSpinner>
       ) : tvDetails ? (
         <>
           {/* Existing background and content */}
@@ -470,7 +473,7 @@ const Container = styled.div`
   top: 72px;
   padding: 0 calc(3.5vw + 5px);
 `;
-
+/*
 const LoadingSpinner = styled.div`
   display: flex;
   align-items: center;
@@ -479,7 +482,37 @@ const LoadingSpinner = styled.div`
   font-size: 24px;
   font-weight: bold;
 `;
+*/
+const LoadingSpinner = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  background: black;
 
+  .spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
 const Background = styled.div`
   left: 0px;
   opacity: 0.8;
@@ -623,6 +656,13 @@ const AddList = styled.div`
       transform: translateX(-8px) rotate(0deg);
       width: 2px;
     }
+  }
+
+  @media (max-width: 768px) {
+    height: 45px;
+    padding: 0px 12px;
+    font-size: 12px;
+    margin: 0px 10px 0px 0px;
   }
 `;
 

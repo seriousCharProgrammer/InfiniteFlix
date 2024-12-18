@@ -1,3 +1,4 @@
+/*
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -218,6 +219,307 @@ export default function Detail() {
     </Container>
   );
 }
+  */
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { getMovieDetails } from '../features/movie/movieSlice';
+import { toast } from 'react-toastify';
+
+export default function Detail() {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const {
+    movieDetails,
+    loading: movieLoading,
+    error,
+  } = useSelector((state) => state.movies);
+  const [showTrailer, setShowTrailer] = useState(false);
+  const [showPlayer, setShowPlayer] = useState(false);
+  const [trailerKey, setTrailerKey] = useState(null);
+  const [initialLoading, setInitialLoading] = useState(true);
+  const API_KEY = process.env.REACT_APP_API_KEY;
+
+  // Fetch movie details and trailer when component mounts
+  useEffect(() => {
+    const fetchMovieData = async () => {
+      try {
+        // Dispatch movie details
+        await dispatch(getMovieDetails(id));
+
+        // Fetch trailer separately
+        try {
+          const response = await fetch(
+            `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${API_KEY}`
+          );
+          const data = await response.json();
+
+          // Find the first trailer or teaser
+          const trailer = data.results.find(
+            (video) => video.type === 'Trailer' || video.type === 'Teaser'
+          );
+
+          if (trailer) {
+            setTrailerKey(trailer.key);
+          }
+        } catch (trailerError) {
+          console.error('Error fetching trailer:', trailerError);
+        } finally {
+          // Always set initial loading to false after attempting to fetch
+          setInitialLoading(false);
+        }
+      } catch (detailError) {
+        console.error('Error fetching movie details:', detailError);
+        setInitialLoading(false);
+      }
+    };
+
+    // Start loading immediately
+    setInitialLoading(true);
+    fetchMovieData();
+  }, [dispatch, id, API_KEY]);
+
+  const handleTrailerClick = () => {
+    if (trailerKey) {
+      setShowTrailer(true);
+    } else {
+      toast.error('No trailer available for this movie');
+    }
+  };
+
+  const handlePlayClick = () => {
+    setShowPlayer(true);
+  };
+
+  const handleCloseTrailer = () => {
+    setShowTrailer(false);
+  };
+
+  const handleClosePlayer = () => {
+    setShowPlayer(false);
+  };
+
+  const handleOutsideClick = (e) => {
+    if (e.target.id === 'trailer-overlay') {
+      setShowTrailer(false);
+    }
+    if (e.target.id === 'player-overlay') {
+      setShowPlayer(false);
+    }
+  };
+
+  const onBackButton = () => {
+    navigate(-1);
+  };
+
+  const handleGroupWatchClick = () => {
+    const movieUrl = `https://your-website.com/movies/${id}`;
+    navigator.clipboard
+      .writeText(movieUrl)
+      .then(() => {
+        toast.success(
+          `The link to the Movie: ${movieDetails.title} copied, Enjoy sharing it with friends 🤩`
+        );
+      })
+      .catch((err) => {
+        console.error('Error copying link: ', err);
+      });
+  };
+
+  const toggleWatchlist = (movieId) => {
+    // Retrieve the current watchlist from localStorage or state
+    let watchlist = JSON.parse(localStorage.getItem('watchlistMovies')) || [];
+
+    // Check if the movie is already in the watchlist
+    const isInWatchlist = watchlist.some((item) => item.id === movieId);
+
+    let updatedWatchlist;
+
+    if (isInWatchlist) {
+      // Remove from watchlist
+      updatedWatchlist = watchlist.filter((item) => item.id !== movieId);
+    } else {
+      // Add to watchlist
+      updatedWatchlist = [...watchlist, { id: movieId }];
+    }
+
+    // Save the updated watchlist back to localStorage or state
+    localStorage.setItem('watchlistMovies', JSON.stringify(updatedWatchlist));
+
+    // Optionally, trigger a toast notification
+    if (isInWatchlist) {
+      toast.success('Movie removed from your watchlist');
+    } else {
+      toast.success('Movie added to your watchlist');
+    }
+  };
+
+  // Determine if we should show loading
+  const isLoading = initialLoading || movieLoading;
+
+  // Handle error state
+  if (error) {
+    return (
+      <ErrorContainer>
+        <p>Failed to load movie details</p>
+        <button onClick={() => navigate(-1)}>Go Back</button>
+      </ErrorContainer>
+    );
+  }
+
+  return (
+    <Container>
+      {isLoading ? (
+        <LoadingSpinner>
+          <div className='spinner'></div>
+          <p>Loading movie details...</p>
+        </LoadingSpinner>
+      ) : (
+        movieDetails && (
+          <>
+            <Background>
+              <img
+                alt={movieDetails.title}
+                src={`https://image.tmdb.org/t/p/original${movieDetails.backdrop_path}`}
+              />
+            </Background>
+            <ImageTitle>
+              <img
+                src={`https://image.tmdb.org/t/p/original${movieDetails.poster_path}`}
+                alt={movieDetails.title}
+              />
+            </ImageTitle>
+            <ContentMeta>
+              <Controls>
+                <Player onClick={handlePlayClick}>
+                  <img src='/images/play-icon-black.png' alt='Play' />
+                  <span>Play</span>
+                </Player>
+                <Trailer onClick={handleTrailerClick}>
+                  <img src='/images/play-icon-white.png' alt='Trailer' />
+                  <span>Trailer</span>
+                </Trailer>
+                <AddList onClick={() => toggleWatchlist(id)}>
+                  <span />
+                  <span />
+                </AddList>
+                <GroupWatch onClick={handleGroupWatchClick}>
+                  <div>
+                    <img src='/images/group-icon.png' alt='Group Watch' />
+                  </div>
+                </GroupWatch>
+                <BackButton onClick={onBackButton}>
+                  <div>
+                    <img src='/images/back-button.png' alt='Group Watch' />
+                  </div>
+                </BackButton>
+              </Controls>
+              <SubTitle>
+                <div>{movieDetails.title || 'Subtitle'}</div>
+                <div>Released in: {movieDetails.release_date || ''}</div>
+                <div>Length: {movieDetails.runtime}m</div>
+              </SubTitle>
+              <Description>
+                {movieDetails.overview || 'No description available.'}
+              </Description>
+            </ContentMeta>
+
+            {showTrailer && trailerKey && (
+              <TrailerOverlay id='trailer-overlay' onClick={handleOutsideClick}>
+                <TrailerIframeContainer>
+                  <iframe
+                    width='100%'
+                    height='100%'
+                    src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1`}
+                    allowFullScreen
+                    allow='autoplay; encrypted-media'
+                    title='Trailer'
+                  />
+                  <CloseButton onClick={handleCloseTrailer}>X</CloseButton>
+                </TrailerIframeContainer>
+              </TrailerOverlay>
+            )}
+
+            {showPlayer && (
+              <PlayerOverlay id='player-overlay' onClick={handleOutsideClick}>
+                <PlayerIframeContainer>
+                  <iframe
+                    width='100%'
+                    height='100%'
+                    src={`https://embed.su/embed/movie/${id}`}
+                    allowFullScreen
+                    allow='autoplay; encrypted-media'
+                    title='Movie Player'
+                  />
+                  <CloseButton onClick={handleClosePlayer}>X</CloseButton>
+                </PlayerIframeContainer>
+              </PlayerOverlay>
+            )}
+          </>
+        )
+      )}
+    </Container>
+  );
+}
+
+const ErrorContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: black;
+  color: white;
+  text-align: center;
+
+  p {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #f3f3f3;
+    border: none;
+    cursor: pointer;
+  }
+`;
+
+const LoadingSpinner = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  background: black;
+
+  .spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+// ... (rest of the styled components remain the same)
 //`https://flicky.host/embed/movie/?id=${id}`
 const Container = styled.div`
   position: relative;
@@ -227,7 +529,7 @@ const Container = styled.div`
   top: 72px;
   padding: 0 calc(3.5vw + 5px);
 `;
-
+/*
 const LoadingSpinner = styled.div`
   display: flex;
   align-items: center;
@@ -236,7 +538,7 @@ const LoadingSpinner = styled.div`
   font-size: 24px;
   font-weight: bold;
 `;
-
+*/
 const Background = styled.div`
   left: 0px;
   opacity: 0.8;
